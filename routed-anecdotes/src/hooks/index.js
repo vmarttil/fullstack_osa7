@@ -9,6 +9,7 @@ export const useField = () => {
 
   return {
     value,
+    setValue,
     onChange
   }
 }

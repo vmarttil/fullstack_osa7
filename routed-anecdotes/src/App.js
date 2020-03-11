@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom"
+import { BrowserRouter as Router, Switch, Route, Link, useParams, useHistory } from "react-router-dom"
+import { render } from '@testing-library/react'
 
 const Menu = () => {
   const padding = {
@@ -61,7 +62,7 @@ const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
-
+  const history = useHistory()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -71,6 +72,7 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    history.push('/')  
   }
 
   return (
@@ -119,6 +121,10 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`A new anecdote, "${anecdote.content}" by ${anecdote.author} added.`)
+    setTimeout(() => {
+      setNotification(null)
+    }, 10000)
   }
 
   const anecdoteById = (id) =>
@@ -151,6 +157,9 @@ const App = () => {
           <Anecdote anecdotes={anecdotes} />
         </Route>
         <Route path="/">
+          {notification != '' &&
+            <p>{notification}</p>
+          }
           <AnecdoteList anecdotes={anecdotes} />
         </Route>
       </Switch>

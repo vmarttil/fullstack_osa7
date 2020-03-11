@@ -60,16 +60,18 @@ const Footer = () => (
 
 const CreateNew = (props) => {
   const history = useHistory()
-  const content = useField('content')
-  const author = useField('author')
-  const info = useField('info')
+  const content = useField('text')
+  const author = useField('text')
+  const info = useField('text')
+
+  console.log(content)
 
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content: content.value,
-      author: author.value,
-      info: info.value,
+      content: content.parameters.value,
+      author: author.parameters.value,
+      info: info.parameters.value,
       votes: 0
     })
     history.push('/')  
@@ -88,15 +90,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name="content" value={content.value} onChange={content.onChange} />
+          <input {...content.parameters} />
         </div>
         <div>
           author
-          <input name="author" value={author.value} onChange={author.onChange} />
+          <input {...author.parameters} />
         </div>
         <div>
           url for more info
-          <input name="info" value={info.value} onChange={info.onChange} />
+          <input {...info.parameters} />
         </div>
       <button onClick={handleReset}>reset</button>
       <button type="submit">create</button> 
@@ -105,6 +107,7 @@ const CreateNew = (props) => {
   )
 
 }
+
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
